@@ -9,12 +9,16 @@ import { useWeb3 } from "../../contexts/Web3Context";
 import { truncateAddress } from "../../lib/xrplClient";
 
 const navItems = [
-  { href: "/",         emoji: "🏠", label: "Home" },
-  { href: "/profile",  emoji: "👤", label: "Profile" },
-  { href: "/users",    emoji: "👥", label: "People" },
-  { href: "/messages", emoji: "✉️",  label: "Messages" },
-  { href: "/groups",   emoji: "🏘️",  label: "Groups" },
-  { href: "/premium",  emoji: "👑",  label: "Premium" },
+  { href: "/",           emoji: "🏠",  label: "Home" },
+  { href: "/video",      emoji: "▶️",  label: "Videos",       badge: "NEW" },
+  { href: "/live",       emoji: "🔴",  label: "Live",         badge: "LIVE" },
+  { href: "/spaces",     emoji: "🎙️",  label: "Spaces" },
+  { href: "/earn",       emoji: "💰",  label: "Earn XRP",     badge: "EARN" },
+  { href: "/marketplace",emoji: "🎨",  label: "Marketplace" },
+  { href: "/users",      emoji: "👥",  label: "People" },
+  { href: "/messages",   emoji: "✉️",   label: "Messages" },
+  { href: "/groups",     emoji: "🏘️",   label: "Groups" },
+  { href: "/premium",    emoji: "👑",  label: "Premium" },
 ];
 
 export default function Sidebar() {
@@ -163,10 +167,11 @@ export default function Sidebar() {
 
       {/* Nav links */}
       <ul style={{ padding: "4px 8px", listStyle: "none", margin: 0 }}>
-        {navItems.map(({ href, emoji, label }) => {
+        {navItems.map(({ href, emoji, label, badge }) => {
           const active = href === "/"
             ? router.pathname === "/"
             : router.pathname.startsWith(href);
+          const badgeColor = badge === "LIVE" ? "#ef4444" : badge === "EARN" ? "#22c55e" : badge === "NEW" ? "#6C63FF" : "#6C63FF";
           return (
             <li key={href} style={{ marginBottom: 2 }}>
               <Link href={href} style={{
@@ -183,7 +188,12 @@ export default function Sidebar() {
                 transition:     "background 0.2s, color 0.2s",
               }}>
                 <span style={{ width: 20, textAlign: "center", fontSize: 16 }}>{emoji}</span>
-                {label}
+                <span style={{ flex: 1 }}>{label}</span>
+                {badge && (
+                  <span style={{ fontSize: 9, fontWeight: 800, padding: "2px 6px", borderRadius: 4, background: badgeColor, color: "#fff", letterSpacing: "0.03em" }}>
+                    {badge}
+                  </span>
+                )}
               </Link>
             </li>
           );

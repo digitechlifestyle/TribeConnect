@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import Layout                  from "../components/Layout/Layout";
 import { useWeb3 }             from "../contexts/Web3Context";
 import { truncateAddress }     from "../lib/xrplClient";
+import TipButton               from "../components/Rewards/TipButton";
 import Link                    from "next/link";
 
 // ── Placeholder data (replace with contract reads) ───────────────────────
@@ -204,7 +205,7 @@ function PostCard({ post }) {
       )}
 
       {/* Actions */}
-      <div style={{ display: "flex", gap: 20, paddingTop: 10, borderTop: "1px solid var(--tc-border, rgba(255,255,255,0.06))" }}>
+      <div style={{ display: "flex", gap: 14, paddingTop: 10, borderTop: "1px solid var(--tc-border, rgba(255,255,255,0.06))", alignItems: "center", flexWrap: "wrap" }}>
         <button onClick={handleLike} style={{ ...actionBtnStyle, color: liked ? "#ef4444" : "var(--tc-text-muted, #64748b)" }}>
           {liked ? "❤️" : "🤍"} {likes}
         </button>
@@ -214,6 +215,9 @@ function PostCard({ post }) {
         <button style={actionBtnStyle}>
           🔗 Share
         </button>
+        <div style={{ marginLeft: "auto" }}>
+          <TipButton recipientAddress={post.author} recipientName={post.name} />
+        </div>
       </div>
     </article>
   );
@@ -235,6 +239,39 @@ function RightWidget() {
             </div>
             <button style={{ padding: "4px 12px", background: "rgba(108,99,255,0.15)", color: "#6C63FF", border: "none", borderRadius: 9999, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Follow</button>
           </div>
+        ))}
+      </div>
+
+      {/* Earn XRP widget */}
+      <div style={{ ...widgetCard, background: "linear-gradient(135deg,rgba(34,197,94,0.1),rgba(245,166,35,0.05))", border: "1px solid rgba(34,197,94,0.2)" }}>
+        <h3 style={{ ...widgetTitle, color: "#22c55e" }}>💰 Earn XRP Today</h3>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {[["🔥 Daily Streak", "0.1 XRP", "/earn"],["📈 Viral Bonus", "Up to 50 XRP", "/earn"],["👥 Refer Friends", "2 XRP each", "/earn"]].map(([label, reward, href]) => (
+            <Link key={label} href={href} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12, color: "var(--tc-text-secondary, #94a3b8)", textDecoration: "none" }}>
+              <span>{label}</span>
+              <span style={{ fontWeight: 700, color: "#F5A623" }}>{reward}</span>
+            </Link>
+          ))}
+        </div>
+        <Link href="/earn" style={{ display: "block", marginTop: 12, padding: "8px", background: "#22c55e", color: "#fff", borderRadius: 8, fontSize: 12, fontWeight: 700, textAlign: "center", textDecoration: "none" }}>
+          Claim Rewards →
+        </Link>
+      </div>
+
+      {/* Live now widget */}
+      <div style={widgetCard}>
+        <h3 style={widgetTitle}>🔴 Live Now</h3>
+        {[{ name: "Carol", viewers: "2.9K", title: "NFT Art Creation" },{ name: "Alice", viewers: "1.8K", title: "XRPL Dev AMA" }].map(room => (
+          <Link key={room.name} href="/live" style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 10, textDecoration: "none" }}>
+            <div style={{ position: "relative", flexShrink: 0 }}>
+              <div style={{ width: 36, height: 36, borderRadius: "50%", background: "linear-gradient(135deg,#6C63FF,#9C6FFF)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 14 }}>{room.name[0]}</div>
+              <div style={{ position: "absolute", bottom: 0, right: 0, width: 10, height: 10, borderRadius: "50%", background: "#ef4444", border: "2px solid var(--tc-card, #1e293b)" }} />
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "var(--tc-text-primary, #E8ECF4)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{room.title}</div>
+              <div style={{ fontSize: 11, color: "var(--tc-text-muted, #64748b)" }}>{room.name} · 👁 {room.viewers}</div>
+            </div>
+          </Link>
         ))}
       </div>
 
