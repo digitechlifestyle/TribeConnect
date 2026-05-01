@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme xmlns="http://www.opensource-socialnetwork.org/theme/v/3.0">
+    <name>TribeConnect</name>
+    <id>tribeconnect</id>
+    <author>TribeConnect Team</author>
+    <author_url>https://tribeconnect.app/</author_url>
+    <description>Modern mobile-first social platform theme with dark/light mode, verification badges, and premium features.</description>
+    <license>MIT</license>
+    <license_url>https://opensource.org/licenses/MIT</license_url>
+    <version>1.0.0</version>
+    <requires>
+        <type>ossn_version</type>
+        <version>9.2</version>
+    </requires>
+</theme>

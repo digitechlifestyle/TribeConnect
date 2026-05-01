@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component xmlns="http://www.opensource-socialnetwork.org/component/v/2.0">
+    <name>TribeConnect Ads Manager</name>
+    <id>TribeConnectAds</id>
+    <author>TribeConnect Team</author>
+    <description>Self-serve ads manager with CPM/CPC billing, sponsored posts, campaign analytics, and affiliate product placements.</description>
+    <license>MIT</license>
+    <version>1.0.0</version>
+    <category>monetisation</category>
+    <requires>
+        <type>ossn_version</type>
+        <version>9.2</version>
+    </requires>
+</component>

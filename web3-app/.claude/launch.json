@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "tribeconnect-web3",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "/Users/joerobertson/Claude - Flowstate/TribeConnect/web3-app",
+      "port": 3001
+    }
+  ]
+}

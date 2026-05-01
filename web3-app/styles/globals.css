@@ -1,0 +1,96 @@
+/* TribeConnect Web3 — Global Styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --tc-purple:       #6C63FF;
+  --tc-purple-dark:  #5A52D5;
+  --tc-purple-light: #EDE9FF;
+  --tc-gold:         #F5A623;
+  --tc-bg:           #F4F6FB;
+  --tc-bg-card:      #FFFFFF;
+  --tc-bg-sidebar:   #FFFFFF;
+  --tc-bg-topbar:    #FFFFFF;
+  --tc-bg-input:     #F0F2F8;
+  --tc-bg-hover:     #F4F6FB;
+  --tc-text-primary:   #1A1D2E;
+  --tc-text-secondary: #64748B;
+  --tc-text-muted:     #94A3B8;
+  --tc-border:       #E2E8F0;
+  --tc-success:      #10B981;
+  --tc-error:        #EF4444;
+  --tc-sidebar-w:    260px;
+  --tc-topbar-h:     64px;
+  --tc-radius-md:    12px;
+  --tc-font:         'Inter', system-ui, -apple-system, sans-serif;
+  --tc-transition:   200ms cubic-bezier(.4,0,.2,1);
+}
+
+[data-theme="dark"] {
+  --tc-bg:           #0F1117;
+  --tc-bg-card:      #1A1D2E;
+  --tc-bg-sidebar:   #141622;
+  --tc-bg-topbar:    #141622;
+  --tc-bg-input:     #252840;
+  --tc-bg-hover:     #252840;
+  --tc-text-primary:   #E8ECF4;
+  --tc-text-secondary: #94A3B8;
+  --tc-text-muted:     #64748B;
+  --tc-border:       #2A2E45;
+  --tc-purple-light: #2A2460;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--tc-font);
+  background: var(--tc-bg);
+  color: var(--tc-text-primary);
+  margin: 0;
+  min-height: 100vh;
+  transition: background var(--tc-transition), color var(--tc-transition);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--tc-border); border-radius: 3px; }
+
+/* WalletConnect modal overrides */
+wcm-modal { --wcm-accent-color: #6C63FF; --wcm-accent-fill-color: #fff; }
+
+/* Keyframe used by XamanQR spinner */
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Connect button utility */
+.tc-connect-btn {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            8px;
+  padding:        10px 20px;
+  background:     var(--tc-purple);
+  color:          #fff;
+  border:         none;
+  border-radius:  9999px;
+  font-weight:    600;
+  font-family:    var(--tc-font);
+  font-size:      14px;
+  cursor:         pointer;
+  transition:     background var(--tc-transition);
+}
+.tc-connect-btn:hover { background: var(--tc-purple-dark); }
+
+/* Xaman badge chip */
+.tc-xaman-badge {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            4px;
+  padding:        3px 10px;
+  background:     rgba(108,99,255,0.15);
+  color:          var(--tc-purple);
+  border-radius:  20px;
+  font-size:      12px;
+  font-weight:    600;
+}

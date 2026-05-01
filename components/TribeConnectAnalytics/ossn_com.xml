@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component xmlns="http://www.opensource-socialnetwork.org/component/v/2.0">
+    <name>TribeConnect Analytics</name>
+    <id>TribeConnectAnalytics</id>
+    <author>TribeConnect Team</author>
+    <description>Admin analytics dashboard: user growth, post activity, revenue, reported content, and moderation queues.</description>
+    <license>MIT</license>
+    <version>1.0.0</version>
+    <category>admin</category>
+    <requires>
+        <type>ossn_version</type>
+        <version>9.2</version>
+    </requires>
+</component>

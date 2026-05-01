@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Environment — contains API keys, never commit real values
+.env.local
+.env.*.local
+
+# Hardhat artefacts
+web3/artifacts/
+web3/cache/
+web3/typechain-types/
+
+# Misc
+.DS_Store
+*.log
+npm-debug.log*
+.vercel

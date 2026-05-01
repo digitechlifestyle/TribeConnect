@@ -42,3 +42,24 @@ error_log
 !/.scrutinizer.yml
 !/.travis.yml
 !.gitignore
+
+# ── TribeConnect custom components (always include) ───────────────────
+!/components/TribeConnectPremium
+!/components/TribeConnectAds
+!/components/TribeConnectAnalytics
+!/components/TribeConnectVerification
+!/components/TribeConnectCreatorSubs
+
+# (TribeConnect theme, docs, and preview are tracked — no ignore rules needed)
+
+# ── Web3 App — exclude build artefacts & secrets only ────────────────
+web3-app/node_modules/
+web3-app/.next/
+web3-app/out/
+web3-app/web3/artifacts/
+web3-app/web3/cache/
+web3-app/.env.local
+web3-app/*.log
+
+# Installation SQL
+installation/sql/tribeconnect.sql

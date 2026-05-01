@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component xmlns="http://www.opensource-socialnetwork.org/component/v/2.0">
+    <name>TribeConnect Premium</name>
+    <id>TribeConnectPremium</id>
+    <author>TribeConnect Team</author>
+    <author_url>https://tribeconnect.app/</author_url>
+    <description>Premium membership system with 3-tier pricing, ad-free browsing, creator subscriptions, and affiliate sections.</description>
+    <license>MIT</license>
+    <version>1.0.0</version>
+    <category>monetisation</category>
+    <requires>
+        <type>ossn_version</type>
+        <version>9.2</version>
+    </requires>
+</component>

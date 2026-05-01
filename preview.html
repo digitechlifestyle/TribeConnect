@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>TribeConnect — Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+/* ── CSS Design System ─────────────────────────────────── */
+:root {
+  --tc-purple:#6C63FF; --tc-purple-dark:#5A52D5; --tc-purple-light:#EDE9FF;
+  --tc-gold:#F5A623; --tc-gold-dark:#D4891A;
+  --tc-bg:#F4F6FB; --tc-bg-card:#FFFFFF; --tc-bg-sidebar:#FFFFFF;
+  --tc-bg-topbar:#FFFFFF; --tc-bg-input:#F0F2F8; --tc-bg-hover:#F4F6FB;
+  --tc-text-primary:#1A1D2E; --tc-text-secondary:#64748B; --tc-text-muted:#94A3B8;
+  --tc-border:#E2E8F0; --tc-border-focus:#6C63FF;
+  --tc-success:#10B981; --tc-error:#EF4444; --tc-warning:#F59E0B; --tc-info:#3B82F6;
+  --tc-shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --tc-shadow-md:0 4px 12px rgba(0,0,0,.08);
+  --tc-shadow-lg:0 10px 30px rgba(0,0,0,.12);
+  --tc-shadow-card:0 2px 8px rgba(108,99,255,.08);
+  --tc-sidebar-w:260px; --tc-topbar-h:60px;
+  --tc-radius-sm:8px; --tc-radius-md:12px; --tc-radius-lg:20px; --tc-radius-full:9999px;
+  --tc-font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --tc-transition:200ms cubic-bezier(.4,0,.2,1);
+}
+[data-theme="dark"] {
+  --tc-bg:#0F1117; --tc-bg-card:#1A1D2E; --tc-bg-sidebar:#141622;
+  --tc-bg-topbar:#141622; --tc-bg-input:#252840; --tc-bg-hover:#252840;
+  --tc-text-primary:#E8ECF4; --tc-text-secondary:#94A3B8; --tc-text-muted:#64748B;
+  --tc-border:#2A2E45; --tc-shadow-card:0 2px 8px rgba(0,0,0,.3);
+  --tc-purple-light:#2A2460;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--tc-font);font-size:15px;line-height:1.6;background:var(--tc-bg);
+  color:var(--tc-text-primary);margin:0;padding:0;min-height:100vh;
+  transition:background var(--tc-transition),color var(--tc-transition);}
+a{color:var(--tc-purple);text-decoration:none}
+ul,ol{list-style:none;margin:0;padding:0}
+
+/* Layout */
+.tc-layout{display:flex;min-height:100vh}
+.tc-main{flex:1;min-width:0;display:flex;flex-direction:column;margin-left:var(--tc-sidebar-w)}
+
+/* Sidebar */
+.tc-sidebar{
+  position:fixed;top:0;left:0;bottom:0;width:var(--tc-sidebar-w);
+  background:var(--tc-bg-sidebar);border-right:1px solid var(--tc-border);
+  display:flex;flex-direction:column;overflow-y:auto;z-index:200;padding:20px 0 12px;
+}
+.tc-sidebar-profile{display:flex;align-items:center;gap:12px;padding:0 16px 20px;
+  border-bottom:1px solid var(--tc-border);margin-bottom:8px}
+.tc-avatar-md{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;
+  background:var(--tc-purple);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:18px}
+.tc-sidebar-name{font-size:14px;font-weight:600;color:var(--tc-text-primary);
+  display:flex;align-items:center;gap:4px}
+.tc-sidebar-username{font-size:12px;color:var(--tc-text-muted)}
+.tc-nav-list{padding:4px 8px}
+.tc-nav-item{margin-bottom:2px}
+.tc-nav-link{display:flex;align-items:center;gap:12px;padding:10px 12px;
+  border-radius:var(--tc-radius-sm);color:var(--tc-text-secondary);font-size:14px;
+  font-weight:500;transition:background var(--tc-transition),color var(--tc-transition);
+  cursor:pointer}
+.tc-nav-link:hover,.tc-nav-link.active{background:var(--tc-purple-light);color:var(--tc-purple)}
+.tc-nav-icon{width:20px;text-align:center;font-size:16px;flex-shrink:0}
+.tc-sidebar-premium-card{margin:12px;padding:16px;
+  background:linear-gradient(135deg,var(--tc-purple),#9C6FFF);
+  border-radius:var(--tc-radius-md);color:#fff;text-align:center}
+.tc-premium-icon{font-size:24px;margin-bottom:8px;color:var(--tc-gold)}
+.tc-sidebar-premium-card p{font-size:13px;margin:0 0 12px;opacity:.9}
+.tc-sidebar-divider{border:none;border-top:1px solid var(--tc-border);margin:8px 16px}
+.tc-sidebar-footer{padding:8px 16px;font-size:11px;color:var(--tc-text-muted)}
+
+/* Topbar */
+.tc-topbar{position:sticky;top:0;background:var(--tc-bg-topbar);border-bottom:1px solid var(--tc-border);
+  z-index:100;box-shadow:var(--tc-shadow-sm)}
+.tc-topbar-inner{display:flex;align-items:center;gap:12px;height:var(--tc-topbar-h);padding:0 16px}
+.tc-topbar-left{display:flex;align-items:center;gap:10px}
+.tc-topbar-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.tc-topbar-center{flex:1;max-width:480px;margin:0 auto}
+.tc-brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;color:var(--tc-text-primary)}
+.tc-brand-icon{width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--tc-purple),#9C6FFF);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:900;flex-shrink:0}
+.tc-search-wrap{position:relative;display:flex;align-items:center;
+  background:var(--tc-bg-input);border-radius:var(--tc-radius-full);
+  border:1px solid transparent;transition:border var(--tc-transition)}
+.tc-search-wrap:focus-within{border-color:var(--tc-border-focus);box-shadow:0 0 0 3px rgba(108,99,255,.15)}
+.tc-search-icon{position:absolute;left:14px;color:var(--tc-text-muted);font-size:14px}
+.tc-search-input{width:100%;padding:9px 16px 9px 38px;background:transparent;border:none;
+  outline:none;font-family:var(--tc-font);font-size:14px;color:var(--tc-text-primary)}
+.tc-search-input::placeholder{color:var(--tc-text-muted)}
+.tc-icon-btn{position:relative;background:none;border:none;cursor:pointer;
+  width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:var(--tc-text-secondary);font-size:16px;transition:background var(--tc-transition)}
+.tc-icon-btn:hover{background:var(--tc-bg-hover);color:var(--tc-purple)}
+.tc-avatar-sm{width:36px;height:36px;border-radius:50%;background:var(--tc-purple);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;cursor:pointer}
+.tc-badge{display:inline-flex;align-items:center;justify-content:center;
+  background:var(--tc-error);color:#fff;font-size:10px;font-weight:700;
+  min-width:18px;height:18px;border-radius:var(--tc-radius-full);padding:0 4px;
+  position:absolute;top:-2px;right:-2px}
+
+/* Buttons */
+.tc-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:9px 20px;border-radius:var(--tc-radius-full);font-family:var(--tc-font);
+  font-size:14px;font-weight:600;cursor:pointer;border:2px solid transparent;
+  transition:all var(--tc-transition);text-decoration:none;line-height:1}
+.tc-btn-primary{background:var(--tc-purple);color:#fff;border-color:var(--tc-purple)}
+.tc-btn-primary:hover{background:var(--tc-purple-dark);box-shadow:0 4px 12px rgba(108,99,255,.35)}
+.tc-btn-gold{background:linear-gradient(135deg,var(--tc-gold),#FFD700);color:#1A1D2E}
+.tc-btn-ghost{background:var(--tc-bg-hover);color:var(--tc-text-secondary)}
+.tc-btn-sm{padding:6px 14px;font-size:13px}
+.tc-btn-outline{background:transparent;color:var(--tc-purple);border-color:var(--tc-purple)}
+
+/* Card */
+.tc-card{background:var(--tc-bg-card);border-radius:var(--tc-radius-md);
+  border:1px solid var(--tc-border);box-shadow:var(--tc-shadow-card);overflow:hidden;margin-bottom:16px}
+
+/* Newsfeed layout */
+.tc-newsfeed-layout{display:grid;grid-template-columns:minmax(0,2fr) 300px;
+  gap:20px;padding:20px 16px;max-width:1100px;margin:0 auto;width:100%}
+.tc-widgets-col{}
+
+/* Post composer */
+.tc-post-composer{padding:16px 20px}
+.tc-composer-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.tc-composer-trigger{flex:1;padding:10px 16px;border-radius:var(--tc-radius-full);
+  background:var(--tc-bg-input);border:1px solid var(--tc-border);color:var(--tc-text-muted);
+  text-align:left;cursor:pointer;font-family:var(--tc-font);font-size:14px}
+.tc-composer-actions{display:flex;gap:4px;border-top:1px solid var(--tc-border);padding-top:12px}
+.tc-composer-action{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:8px;border:none;background:none;cursor:pointer;border-radius:var(--tc-radius-sm);
+  color:var(--tc-text-secondary);font-size:13px;font-weight:500;
+  transition:background var(--tc-transition),color var(--tc-transition)}
+.tc-composer-action:hover{background:var(--tc-bg-hover);color:var(--tc-purple)}
+
+/* Post card */
+.tc-post{padding:16px 20px}
+.tc-post-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.tc-post-name{font-weight:600;font-size:14px}
+.tc-post-time{font-size:12px;color:var(--tc-text-muted)}
+.tc-post-text{font-size:14px;line-height:1.7;margin-bottom:12px;color:var(--tc-text-secondary)}
+.tc-post-image{width:100%;border-radius:var(--tc-radius-sm);display:block;margin-bottom:12px;background:#ddd;height:220px;object-fit:cover}
+.tc-post-actions{display:flex;gap:4px;border-top:1px solid var(--tc-border);padding-top:12px}
+.tc-action-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:8px;border:none;background:none;cursor:pointer;border-radius:var(--tc-radius-sm);
+  color:var(--tc-text-secondary);font-size:13px;font-weight:500;
+  transition:background var(--tc-transition),color var(--tc-transition)}
+.tc-action-btn:hover{background:var(--tc-bg-hover);color:var(--tc-purple)}
+.tc-action-btn.liked{color:#EF4444}
+
+/* Verified badge */
+.tc-verified-badge{color:var(--tc-purple);font-size:14px}
+
+/* Widgets */
+.tc-widget-title{font-size:15px;font-weight:700;padding:16px 20px 12px;margin:0;
+  border-bottom:1px solid var(--tc-border)}
+.tc-people-list{padding:8px 0}
+.tc-person{display:flex;align-items:center;gap:10px;padding:8px 20px;
+  transition:background var(--tc-transition)}
+.tc-person:hover{background:var(--tc-bg-hover)}
+.tc-person-info{flex:1;min-width:0}
+.tc-person-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tc-person-handle{font-size:12px;color:var(--tc-text-muted)}
+.tc-person-avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
+
+/* Ad unit */
+.tc-ad-unit{position:relative;overflow:hidden}
+.tc-ad-label{position:absolute;top:8px;right:8px;font-size:10px;color:var(--tc-text-muted);
+  background:var(--tc-bg-hover);padding:2px 6px;border-radius:var(--tc-radius-full);
+  text-transform:uppercase;letter-spacing:.5px}
+.tc-ad-img{width:100%;height:140px;background:linear-gradient(135deg,#667eea,#764ba2);
+  display:flex;align-items:center;justify-content:center;color:white;font-size:13px}
+.tc-ad-body{padding:12px 16px 14px}
+.tc-ad-title{font-size:14px;font-weight:600;margin:0 0 4px}
+.tc-ad-desc{font-size:13px;color:var(--tc-text-secondary);margin:0 0 10px}
+
+/* Pill */
+.tc-pill{display:inline-flex;align-items:center;padding:3px 10px;
+  border-radius:var(--tc-radius-full);font-size:12px;font-weight:600}
+.tc-pill-green{background:#ECFDF5;color:#059669}
+.tc-pill-purple{background:var(--tc-purple-light);color:var(--tc-purple)}
+
+/* Stats grid */
+.tc-stats-grid{display:grid;gap:16px;grid-template-columns:repeat(4,1fr);margin-bottom:24px}
+.tc-stat-card{background:var(--tc-bg-card);border-radius:var(--tc-radius-md);
+  border:1px solid var(--tc-border);padding:20px;display:flex;align-items:center;gap:16px}
+.tc-stat-icon{width:48px;height:48px;border-radius:var(--tc-radius-sm);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.tc-stat-icon.purple{background:var(--tc-purple-light);color:var(--tc-purple)}
+.tc-stat-icon.gold{background:#FFF7E6;color:var(--tc-gold)}
+.tc-stat-icon.green{background:#ECFDF5;color:var(--tc-success)}
+.tc-stat-icon.red{background:#FEF2F2;color:var(--tc-error)}
+.tc-stat-num{font-size:26px;font-weight:800;line-height:1}
+.tc-stat-label{font-size:13px;color:var(--tc-text-muted);margin-top:4px}
+
+/* Tables */
+.tc-table-wrap{overflow-x:auto;background:var(--tc-bg-card);border-radius:var(--tc-radius-md);
+  border:1px solid var(--tc-border)}
+.tc-table{width:100%;border-collapse:collapse;font-size:14px}
+.tc-table th{text-align:left;padding:12px 16px;font-weight:600;font-size:12px;
+  color:var(--tc-text-muted);text-transform:uppercase;letter-spacing:.5px;
+  border-bottom:2px solid var(--tc-border);background:var(--tc-bg)}
+.tc-table td{padding:14px 16px;border-bottom:1px solid var(--tc-border);vertical-align:middle}
+.tc-table tr:last-child td{border-bottom:none}
+.tc-table tr:hover td{background:var(--tc-bg-hover)}
+
+/* Pricing */
+.tc-pricing-grid{display:grid;gap:24px;grid-template-columns:repeat(3,1fr);padding:8px 0 24px}
+.tc-pricing-card{background:var(--tc-bg-card);border:2px solid var(--tc-border);
+  border-radius:var(--tc-radius-lg);padding:28px 24px;display:flex;flex-direction:column;
+  gap:16px;position:relative}
+.tc-pricing-card.featured{border-color:var(--tc-purple);box-shadow:0 0 0 4px rgba(108,99,255,.1)}
+.tc-pricing-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+  background:var(--tc-purple);color:#fff;padding:4px 16px;
+  border-radius:var(--tc-radius-full);font-size:12px;font-weight:700;white-space:nowrap}
+.tc-pricing-name{font-size:18px;font-weight:700}
+.tc-pricing-price{font-size:40px;font-weight:800;line-height:1}
+.tc-pricing-price span{font-size:16px;font-weight:400;color:var(--tc-text-muted)}
+.tc-pricing-features{display:flex;flex-direction:column;gap:10px}
+.tc-pricing-features li{display:flex;align-items:center;gap:10px;font-size:14px}
+.tc-pricing-features li i{color:var(--tc-success);width:16px}
+.tc-pricing-features li.off{color:var(--tc-text-muted)}
+.tc-pricing-features li.off i{color:var(--tc-text-muted)}
+
+/* Profile */
+.tc-profile-cover{height:200px;background:linear-gradient(135deg,#6C63FF,#9C6FFF);
+  position:relative;overflow:hidden}
+.tc-profile-cover-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 60%,rgba(0,0,0,.35))}
+.tc-profile-header{position:relative;padding:0 24px 20px;
+  background:var(--tc-bg-card);border-bottom:1px solid var(--tc-border)}
+.tc-profile-avatar-wrap{position:absolute;top:-52px;left:24px;
+  border:4px solid var(--tc-bg-card);border-radius:50%}
+.tc-profile-avatar{width:100px;height:100px;border-radius:50%;
+  background:linear-gradient(135deg,var(--tc-purple),#9C6FFF);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:40px;font-weight:800}
+.tc-profile-info{padding-top:60px;display:flex;justify-content:space-between;align-items:flex-end}
+.tc-profile-name{font-size:22px;font-weight:800;display:flex;align-items:center;gap:8px}
+.tc-profile-bio{color:var(--tc-text-secondary);font-size:14px;margin:4px 0}
+.tc-profile-stats{display:flex;gap:24px;margin-top:12px}
+.tc-profile-stat{text-align:center}
+.tc-profile-stat-num{font-size:18px;font-weight:700}
+.tc-profile-stat-label{font-size:12px;color:var(--tc-text-muted)}
+
+/* Nav tabs for demo views */
+.demo-tabs{display:flex;gap:4px;padding:0 20px 0;margin-bottom:20px;
+  border-bottom:1px solid var(--tc-border);background:var(--tc-bg-topbar)}
+.demo-tab{padding:12px 20px;cursor:pointer;font-size:14px;font-weight:500;
+  color:var(--tc-text-secondary);border-bottom:3px solid transparent;
+  transition:all var(--tc-transition);white-space:nowrap}
+.demo-tab:hover{color:var(--tc-purple)}
+.demo-tab.active{color:var(--tc-purple);border-bottom-color:var(--tc-purple)}
+.demo-view{display:none}
+.demo-view.active{display:block}
+
+/* Footer */
+.tc-footer{border-top:1px solid var(--tc-border);padding:20px 16px;text-align:center}
+.tc-footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:8px}
+.tc-footer-links a{font-size:13px;color:var(--tc-text-muted)}
+.tc-footer-copy{font-size:12px;color:var(--tc-text-muted);margin:0}
+
+/* Theme toggle */
+.tc-theme-toggle{background:none;border:none;cursor:pointer;width:38px;height:38px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:var(--tc-text-secondary);font-size:16px;transition:all var(--tc-transition)}
+.tc-theme-toggle:hover{background:var(--tc-bg-hover);color:var(--tc-purple)}
+
+/* Chart bars */
+.tc-chart{display:flex;align-items:flex-end;gap:8px;height:140px;padding:0 4px}
+.tc-bar-wrap{display:flex;flex-direction:column;align-items:center;flex:1;gap:4px}
+.tc-bar{width:100%;background:var(--tc-purple);border-radius:4px 4px 0 0;
+  transition:height .5s ease;opacity:.8}
+.tc-bar:hover{opacity:1}
+.tc-bar-label{font-size:10px;color:var(--tc-text-muted)}
+
+/* Story row */
+.tc-stories{display:flex;gap:12px;padding:16px 20px;overflow-x:auto}
+.tc-story{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;flex-shrink:0}
+.tc-story-ring{width:56px;height:56px;border-radius:50%;padding:2px;
+  background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+.tc-story-inner{width:100%;height:100%;border-radius:50%;border:3px solid var(--tc-bg-card);
+  display:flex;align-items:center;justify-content:center;font-weight:700;
+  font-size:18px;color:#fff}
+.tc-story-name{font-size:11px;color:var(--tc-text-secondary);white-space:nowrap}
+
+/* Admin sidebar */
+.tc-admin-sidebar-items{padding:8px}
+.tc-admin-nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;
+  border-radius:var(--tc-radius-sm);color:var(--tc-text-secondary);font-size:14px;
+  cursor:pointer;transition:all var(--tc-transition);margin-bottom:2px}
+.tc-admin-nav-item:hover,.tc-admin-nav-item.active{background:var(--tc-purple-light);color:var(--tc-purple)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     DEMO NAV — Switch between views
+══════════════════════════════════════════════════════════════ -->
+<div style="background:var(--tc-purple);padding:0;position:sticky;top:0;z-index:999;box-shadow:0 2px 8px rgba(0,0,0,.2)">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:44px">
+    <span style="color:#fff;font-size:14px;font-weight:700;letter-spacing:.5px">▸ TRIBECONNECT PREVIEW</span>
+    <div style="display:flex;gap:4px">
+      <button onclick="showView('feed')"    class="vpill active" id="vb-feed">📰 Feed</button>
+      <button onclick="showView('profile')" class="vpill" id="vb-profile">👤 Profile</button>
+      <button onclick="showView('premium')" class="vpill" id="vb-premium">💎 Premium</button>
+      <button onclick="showView('admin')"   class="vpill" id="vb-admin">⚙️ Admin</button>
+    </div>
+    <button onclick="toggleDark()" style="background:rgba(255,255,255,.2);border:none;color:#fff;
+      padding:6px 14px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600">
+      🌙 Dark Mode
+    </button>
+  </div>
+</div>
+<style>
+.vpill{background:rgba(255,255,255,.15);border:none;color:#fff;padding:6px 14px;
+  border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s}
+.vpill:hover,.vpill.active{background:rgba(255,255,255,.35)}
+</style>
+
+
+<!-- ═══════════════════════ VIEW: FEED ════════════════════════ -->
+<div id="view-feed" class="tc-layout">
+
+  <!-- Sidebar -->
+  <nav class="tc-sidebar">
+    <div class="tc-sidebar-profile">
+      <div class="tc-avatar-md">J</div>
+      <div>
+        <div class="tc-sidebar-name">
+          Joe Robertson
+          <span class="tc-verified-badge"><i class="fa fa-circle-check"></i></span>
+        </div>
+        <div class="tc-sidebar-username">@joe</div>
+      </div>
+    </div>
+
+    <ul class="tc-nav-list">
+      <li class="tc-nav-item"><a class="tc-nav-link active"><i class="fa fa-house tc-nav-icon"></i>Home</a></li>
+      <li class="tc-nav-item"><a class="tc-nav-link"><i class="fa fa-user tc-nav-icon"></i>Profile</a></li>
+      <li class="tc-nav-item"><a class="tc-nav-link"><i class="fa fa-user-group tc-nav-icon"></i>Friends</a></li>
+      <li class="tc-nav-item">
+        <a class="tc-nav-link" style="position:relative">
+          <i class="fa fa-envelope tc-nav-icon"></i>Messages
+          <span style="position:absolute;top:8px;right:10px;background:#EF4444;color:#fff;
+            font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:99px;
+            display:flex;align-items:center;justify-content:center;padding:0 4px">3</span>
+        </a>
+      </li>
+      <li class="tc-nav-item"><a class="tc-nav-link"><i class="fa fa-people-roof tc-nav-icon"></i>Groups</a></li>
+      <li class="tc-nav-item"><a class="tc-nav-link"><i class="fa fa-images tc-nav-icon"></i>Photos</a></li>
+      <li class="tc-nav-item"><a class="tc-nav-link"><i class="fa fa-magnifying-glass tc-nav-icon"></i>Search</a></li>
+    </ul>
+
+    <div class="tc-sidebar-premium-card">
+      <div class="tc-premium-icon"><i class="fa fa-crown"></i></div>
+      <p>Get ad-free browsing and creator tools</p>
+      <button class="tc-btn tc-btn-gold tc-btn-sm">Upgrade to Premium</button>
+    </div>
+
+    <hr class="tc-sidebar-divider"/>
+    <ul class="tc-nav-list">
+      <li class="tc-nav-item"><a class="tc-nav-link"><i class="fa fa-gear tc-nav-icon"></i>Settings</a></li>
+      <li class="tc-nav-item"><a class="tc-nav-link" style="color:var(--tc-error)"><i class="fa fa-right-from-bracket tc-nav-icon"></i>Log Out</a></li>
+    </ul>
+    <div class="tc-sidebar-footer">
+      <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">About</a>
+      <p style="margin:4px 0 0">© 2026 TribeConnect</p>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <div class="tc-main">
+    <!-- Topbar -->
+    <header class="tc-topbar">
+      <div class="tc-topbar-inner">
+        <div class="tc-topbar-left">
+          <div class="tc-brand">
+            <div class="tc-brand-icon">T</div>
+            <span>TribeConnect</span>
+          </div>
+        </div>
+        <div class="tc-topbar-center">
+          <div class="tc-search-wrap">
+            <i class="fa fa-search tc-search-icon"></i>
+            <input type="text" class="tc-search-input" placeholder="Search TribeConnect…"/>
+          </div>
+        </div>
+        <div class="tc-topbar-right">
+          <button class="tc-icon-btn"><i class="fa fa-bell"></i><span class="tc-badge">5</span></button>
+          <button class="tc-icon-btn"><i class="fa fa-envelope"></i><span class="tc-badge">3</span></button>
+          <div class="tc-avatar-sm">J</div>
+          <button class="tc-theme-toggle" onclick="toggleDark()"><i class="fa fa-moon"></i></button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stories + Feed -->
+    <div class="tc-newsfeed-layout">
+      <main>
+        <!-- Stories -->
+        <div class="tc-card">
+          <div class="tc-stories">
+            <div class="tc-story">
+              <div class="tc-story-ring"><div class="tc-story-inner" style="background:#6C63FF">J</div></div>
+              <span class="tc-story-name">Your story</span>
+            </div>
+            <div class="tc-story">
+              <div class="tc-story-ring"><div class="tc-story-inner" style="background:#10B981">S</div></div>
+              <span class="tc-story-name">Sarah</span>
+            </div>
+            <div class="tc-story">
+              <div class="tc-story-ring"><div class="tc-story-inner" style="background:#F5A623">M</div></div>
+              <span class="tc-story-name">Marcus</span>
+            </div>
+            <div class="tc-story">
+              <div class="tc-story-ring"><div class="tc-story-inner" style="background:#EF4444">A</div></div>
+              <span class="tc-story-name">Aisha</span>
+            </div>
+            <div class="tc-story">
+              <div class="tc-story-ring"><div class="tc-story-inner" style="background:#8B5CF6">P</div></div>
+              <span class="tc-story-name">Priya</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Composer -->
+        <div class="tc-card tc-post-composer">
+          <div class="tc-composer-top">
+            <div class="tc-avatar-sm">J</div>
+            <button class="tc-composer-trigger">What's on your mind, Joe?</button>
+          </div>
+          <div class="tc-composer-actions">
+            <button class="tc-composer-action"><i class="fa fa-image"></i> Photo</button>
+            <button class="tc-composer-action"><i class="fa fa-face-smile"></i> Feeling</button>
+            <button class="tc-composer-action"><i class="fa fa-location-dot"></i> Location</button>
+          </div>
+        </div>
+
+        <!-- Post 1 -->
+        <div class="tc-card tc-post">
+          <div class="tc-post-header">
+            <div class="tc-avatar-sm" style="background:#10B981">S</div>
+            <div>
+              <div class="tc-post-name">Sarah Chen <span class="tc-verified-badge"><i class="fa fa-circle-check"></i></span></div>
+              <div class="tc-post-time">2 hours ago · 🌍 Public</div>
+            </div>
+            <button class="tc-icon-btn" style="margin-left:auto"><i class="fa fa-ellipsis"></i></button>
+          </div>
+          <div class="tc-post-text">Just wrapped up our community garden project 🌱 Six months of hard work and it's finally open to everyone in the neighbourhood. Come by and pick some tomatoes — seriously, we have SO many tomatoes 😂</div>
+          <div style="width:100%;height:220px;background:linear-gradient(135deg,#84fab0,#8fd3f4);border-radius:var(--tc-radius-sm);margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:48px">🌿</div>
+          <div class="tc-post-actions">
+            <button class="tc-action-btn liked"><i class="fa fa-heart"></i> 248</button>
+            <button class="tc-action-btn"><i class="fa fa-comment"></i> 34</button>
+            <button class="tc-action-btn"><i class="fa fa-share"></i> Share</button>
+          </div>
+        </div>
+
+        <!-- Sponsored post -->
+        <div class="tc-card tc-ad-unit">
+          <div class="tc-ad-label">Sponsored</div>
+          <div class="tc-ad-img"><span>🚀 TechStartup — Grow your business</span></div>
+          <div class="tc-ad-body">
+            <div class="tc-ad-title">Launch your side project in 48 hours</div>
+            <div class="tc-ad-desc">The platform thousands of creators trust to go from idea to income.</div>
+            <button class="tc-btn tc-btn-primary tc-btn-sm">Learn More</button>
+          </div>
+        </div>
+
+        <!-- Post 2 -->
+        <div class="tc-card tc-post">
+          <div class="tc-post-header">
+            <div class="tc-avatar-sm" style="background:#F5A623">M</div>
+            <div>
+              <div class="tc-post-name">Marcus Williams</div>
+              <div class="tc-post-time">5 hours ago · 👥 Friends</div>
+            </div>
+            <button class="tc-icon-btn" style="margin-left:auto"><i class="fa fa-ellipsis"></i></button>
+          </div>
+          <div class="tc-post-text">Finally finished reading <strong>"Atomic Habits"</strong> — the 1% rule genuinely changed how I approach my mornings. If you're stuck in a rut, highly recommend. 📚</div>
+          <div class="tc-post-actions">
+            <button class="tc-action-btn"><i class="fa fa-heart"></i> 89</button>
+            <button class="tc-action-btn"><i class="fa fa-comment"></i> 12</button>
+            <button class="tc-action-btn"><i class="fa fa-share"></i> Share</button>
+          </div>
+        </div>
+      </main>
+
+      <!-- Widgets -->
+      <aside class="tc-widgets-col">
+        <div class="tc-card">
+          <h3 class="tc-widget-title">People You May Know</h3>
+          <div class="tc-people-list">
+            <div class="tc-person">
+              <div class="tc-person-avatar" style="background:#8B5CF6">P</div>
+              <div class="tc-person-info">
+                <div class="tc-person-name">Priya Patel <span class="tc-verified-badge" style="font-size:11px"><i class="fa fa-circle-check"></i></span></div>
+                <div class="tc-person-handle">@priya · 4.2K followers</div>
+              </div>
+              <button class="tc-btn tc-btn-primary tc-btn-sm">Follow</button>
+            </div>
+            <div class="tc-person">
+              <div class="tc-person-avatar" style="background:#EF4444">A</div>
+              <div class="tc-person-info">
+                <div class="tc-person-name">Aisha K.</div>
+                <div class="tc-person-handle">@aishak · 891 followers</div>
+              </div>
+              <button class="tc-btn tc-btn-outline tc-btn-sm">Follow</button>
+            </div>
+            <div class="tc-person">
+              <div class="tc-person-avatar" style="background:#06B6D4">D</div>
+              <div class="tc-person-info">
+                <div class="tc-person-name">David M.</div>
+                <div class="tc-person-handle">@davidm · 2.1K followers</div>
+              </div>
+              <button class="tc-btn tc-btn-outline tc-btn-sm">Follow</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tc-card">
+          <h3 class="tc-widget-title">Suggested Groups</h3>
+          <div class="tc-people-list">
+            <div class="tc-person">
+              <div class="tc-person-avatar" style="background:#10B981;border-radius:8px">🌱</div>
+              <div class="tc-person-info">
+                <div class="tc-person-name">Urban Gardeners</div>
+                <div class="tc-person-handle">12.4K members</div>
+              </div>
+              <button class="tc-btn tc-btn-ghost tc-btn-sm">Join</button>
+            </div>
+            <div class="tc-person">
+              <div class="tc-person-avatar" style="background:#F59E0B;border-radius:8px">📸</div>
+              <div class="tc-person-info">
+                <div class="tc-person-name">Photography Hub</div>
+                <div class="tc-person-handle">34.2K members</div>
+              </div>
+              <button class="tc-btn tc-btn-ghost tc-btn-sm">Join</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tc-card tc-ad-unit">
+          <div class="tc-ad-label">Ad</div>
+          <div class="tc-ad-img" style="height:90px;background:linear-gradient(135deg,#667eea,#764ba2)">🎯 Reach your audience</div>
+          <div class="tc-ad-body">
+            <div class="tc-ad-title">Grow faster with TribeConnect Ads</div>
+            <div class="tc-ad-desc">Target your ideal community.</div>
+            <button class="tc-btn tc-btn-primary tc-btn-sm">Start Campaign</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="tc-footer">
+      <div class="tc-footer-links">
+        <a href="#">About</a><a href="#">Privacy</a><a href="#">Terms</a>
+        <a href="#">Help</a><a href="#">Premium</a><a href="#">Advertise</a>
+      </div>
+      <p class="tc-footer-copy">© 2026 TribeConnect — Connect. Share. Thrive.</p>
+    </footer>
+  </div>
+</div>
+
+
+<!-- ══════════════════════ VIEW: PROFILE ═════════════════════ -->
+<div id="view-profile" style="display:none;background:var(--tc-bg);min-height:100vh">
+  <header class="tc-topbar">
+    <div class="tc-topbar-inner">
+      <div class="tc-brand"><div class="tc-brand-icon">T</div><span>TribeConnect</span></div>
+      <div class="tc-topbar-center">
+        <div class="tc-search-wrap"><i class="fa fa-search tc-search-icon"></i>
+          <input type="text" class="tc-search-input" placeholder="Search…"/>
+        </div>
+      </div>
+      <div class="tc-topbar-right">
+        <button class="tc-icon-btn"><i class="fa fa-bell"></i></button>
+        <div class="tc-avatar-sm">J</div>
+        <button class="tc-theme-toggle" onclick="toggleDark()"><i class="fa fa-moon"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <div style="max-width:860px;margin:0 auto;padding:0 16px 40px">
+    <div class="tc-card" style="margin-top:20px;overflow:visible">
+      <div class="tc-profile-cover">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#6C63FF 0%,#9C6FFF 50%,#C4B5FD 100%);display:flex;align-items:center;justify-content:center;font-size:60px">🌆</div>
+        <div class="tc-profile-cover-overlay"></div>
+      </div>
+      <div class="tc-profile-header">
+        <div class="tc-profile-avatar-wrap">
+          <div class="tc-profile-avatar">J</div>
+        </div>
+        <div class="tc-profile-info">
+          <div>
+            <div class="tc-profile-name">
+              Joe Robertson
+              <span class="tc-verified-badge"><i class="fa fa-circle-check"></i></span>
+              <span style="background:linear-gradient(135deg,#F5A623,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:14px;font-weight:800">✦ Creator</span>
+            </div>
+            <div class="tc-profile-bio">Building things on the internet ✨ | Founder @TribeConnect | Coffee aficionado ☕</div>
+            <div class="tc-profile-stats">
+              <div class="tc-profile-stat"><div class="tc-profile-stat-num">847</div><div class="tc-profile-stat-label">Posts</div></div>
+              <div class="tc-profile-stat"><div class="tc-profile-stat-num">12.4K</div><div class="tc-profile-stat-label">Followers</div></div>
+              <div class="tc-profile-stat"><div class="tc-profile-stat-num">934</div><div class="tc-profile-stat-label">Following</div></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="tc-btn tc-btn-primary">Follow</button>
+            <button class="tc-btn tc-btn-ghost"><i class="fa fa-envelope"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Creator subscription tiers -->
+    <div class="tc-card">
+      <div class="tc-card-header" style="padding:16px 20px;border-bottom:1px solid var(--tc-border);font-weight:700;font-size:15px">
+        <span>🎬 Support Joe's Work</span>
+      </div>
+      <div style="padding:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+        <div style="padding:20px;border:1px solid var(--tc-border);border-radius:var(--tc-radius-md);text-align:center">
+          <div style="font-size:24px;margin-bottom:8px">☕</div>
+          <div style="font-weight:700;margin-bottom:4px">Supporter</div>
+          <div style="font-size:22px;font-weight:800;color:var(--tc-purple)">$5<span style="font-size:14px;font-weight:400;color:var(--tc-text-muted)">/mo</span></div>
+          <button class="tc-btn tc-btn-outline tc-btn-sm" style="margin-top:12px;width:100%">Subscribe</button>
+        </div>
+        <div style="padding:20px;border:2px solid var(--tc-purple);border-radius:var(--tc-radius-md);text-align:center;background:var(--tc-purple-light)">
+          <div style="font-size:24px;margin-bottom:8px">🚀</div>
+          <div style="font-weight:700;margin-bottom:4px">Builder</div>
+          <div style="font-size:22px;font-weight:800;color:var(--tc-purple)">$15<span style="font-size:14px;font-weight:400;color:var(--tc-text-muted)">/mo</span></div>
+          <button class="tc-btn tc-btn-primary tc-btn-sm" style="margin-top:12px;width:100%">Subscribe</button>
+        </div>
+        <div style="padding:20px;border:1px solid var(--tc-gold);border-radius:var(--tc-radius-md);text-align:center">
+          <div style="font-size:24px;margin-bottom:8px">👑</div>
+          <div style="font-weight:700;margin-bottom:4px">Founder</div>
+          <div style="font-size:22px;font-weight:800;color:var(--tc-gold)">$49<span style="font-size:14px;font-weight:400;color:var(--tc-text-muted)">/mo</span></div>
+          <button class="tc-btn tc-btn-gold tc-btn-sm" style="margin-top:12px;width:100%">Subscribe</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile posts -->
+    <div class="tc-card tc-post">
+      <div class="tc-post-header">
+        <div class="tc-avatar-sm">J</div>
+        <div>
+          <div class="tc-post-name">Joe Robertson <span class="tc-verified-badge"><i class="fa fa-circle-check"></i></span></div>
+          <div class="tc-post-time">Yesterday · 🌍</div>
+        </div>
+      </div>
+      <div class="tc-post-text">Shipped a huge feature today — dark mode is now live on TribeConnect! 🌙 It respects your OS preference AND saves it locally. Let me know what you think ↓</div>
+      <div class="tc-post-actions">
+        <button class="tc-action-btn liked"><i class="fa fa-heart"></i> 412</button>
+        <button class="tc-action-btn"><i class="fa fa-comment"></i> 67</button>
+        <button class="tc-action-btn"><i class="fa fa-share"></i> Share</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════ VIEW: PREMIUM ═════════════════════ -->
+<div id="view-premium" style="display:none;background:var(--tc-bg);min-height:100vh">
+  <header class="tc-topbar">
+    <div class="tc-topbar-inner">
+      <div class="tc-brand"><div class="tc-brand-icon">T</div><span>TribeConnect</span></div>
+      <div class="tc-topbar-right">
+        <button class="tc-icon-btn"><i class="fa fa-bell"></i></button>
+        <div class="tc-avatar-sm">J</div>
+        <button class="tc-theme-toggle" onclick="toggleDark()"><i class="fa fa-moon"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <div style="max-width:900px;margin:0 auto;padding:40px 16px">
+    <div style="text-align:center;margin-bottom:40px">
+      <div style="font-size:40px;margin-bottom:8px">💎</div>
+      <h1 style="font-size:36px;font-weight:800;margin:0 0 8px">TribeConnect Premium</h1>
+      <p style="font-size:16px;color:var(--tc-text-secondary);margin:0">Unlock the full platform experience</p>
+    </div>
+
+    <div class="tc-pricing-grid">
+      <!-- Free -->
+      <div class="tc-pricing-card">
+        <div class="tc-pricing-name">Free</div>
+        <div class="tc-pricing-price">$0<span> forever</span></div>
+        <ul class="tc-pricing-features">
+          <li><i class="fa fa-check"></i> Basic profile</li>
+          <li><i class="fa fa-check"></i> Post & comment</li>
+          <li><i class="fa fa-check"></i> Join groups</li>
+          <li><i class="fa fa-check"></i> Standard support</li>
+          <li class="off"><i class="fa fa-xmark"></i> Ad-free experience</li>
+          <li class="off"><i class="fa fa-xmark"></i> Creator tools</li>
+          <li class="off"><i class="fa fa-xmark"></i> Analytics</li>
+        </ul>
+        <button class="tc-btn tc-btn-ghost tc-btn-full" style="margin-top:auto">Current Plan</button>
+      </div>
+
+      <!-- Pro (featured) -->
+      <div class="tc-pricing-card featured">
+        <div class="tc-pricing-badge">Most Popular</div>
+        <div class="tc-pricing-name">Pro</div>
+        <div class="tc-pricing-price">$9.99<span>/month</span></div>
+        <ul class="tc-pricing-features">
+          <li><i class="fa fa-check"></i> <strong>Ad-free</strong> experience</li>
+          <li><i class="fa fa-check"></i> Verified Pro badge ✓</li>
+          <li><i class="fa fa-check"></i> Priority support</li>
+          <li><i class="fa fa-check"></i> Extended post history</li>
+          <li><i class="fa fa-check"></i> Custom profile themes</li>
+          <li class="off"><i class="fa fa-xmark"></i> Creator monetisation</li>
+          <li class="off"><i class="fa fa-xmark"></i> Analytics dashboard</li>
+        </ul>
+        <button class="tc-btn tc-btn-primary tc-btn-full" style="margin-top:auto">Upgrade to Pro</button>
+      </div>
+
+      <!-- Creator -->
+      <div class="tc-pricing-card">
+        <div class="tc-pricing-name">Creator <i class="fa fa-crown" style="color:var(--tc-gold)"></i></div>
+        <div class="tc-pricing-price">$24.99<span>/month</span></div>
+        <ul class="tc-pricing-features">
+          <li><i class="fa fa-check"></i> Everything in Pro</li>
+          <li><i class="fa fa-check"></i> Creator monetisation</li>
+          <li><i class="fa fa-check"></i> Subscriber management</li>
+          <li><i class="fa fa-check"></i> Affiliate product section</li>
+          <li><i class="fa fa-check"></i> Full analytics dashboard</li>
+          <li><i class="fa fa-check"></i> Priority verification</li>
+          <li><i class="fa fa-check"></i> Custom Creator badge</li>
+        </ul>
+        <button class="tc-btn tc-btn-gold tc-btn-full" style="margin-top:auto">Become a Creator</button>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div style="margin-top:40px">
+      <h2 style="text-align:center;font-size:22px;margin-bottom:24px">Frequently Asked Questions</h2>
+      <div style="display:grid;gap:16px">
+        <div class="tc-card" style="padding:20px">
+          <div style="font-weight:600;margin-bottom:8px">Can I cancel anytime?</div>
+          <div style="color:var(--tc-text-secondary);font-size:14px">Yes — cancel from your settings any time. You keep access until the end of your billing period.</div>
+        </div>
+        <div class="tc-card" style="padding:20px">
+          <div style="font-weight:600;margin-bottom:8px">How does creator monetisation work?</div>
+          <div style="color:var(--tc-text-secondary);font-size:14px">Set your own subscription tiers, your followers subscribe monthly, and you receive 85% of revenue directly via Stripe.</div>
+        </div>
+        <div class="tc-card" style="padding:20px">
+          <div style="font-weight:600;margin-bottom:8px">What payment methods are accepted?</div>
+          <div style="color:var(--tc-text-secondary);font-size:14px">All major credit/debit cards and Apple Pay via Stripe. More methods coming soon.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════ VIEW: ADMIN ═══════════════════════ -->
+<div id="view-admin" style="display:none;min-height:100vh;background:var(--tc-bg)">
+  <div style="display:grid;grid-template-columns:220px 1fr;min-height:100vh">
+
+    <!-- Admin sidebar -->
+    <div style="background:var(--tc-bg-sidebar);border-right:1px solid var(--tc-border);padding:0">
+      <div style="padding:20px 16px;border-bottom:1px solid var(--tc-border);display:flex;align-items:center;gap:10px">
+        <div class="tc-brand-icon" style="width:28px;height:28px;font-size:13px">T</div>
+        <span style="font-weight:700;font-size:15px">Admin Panel</span>
+      </div>
+      <div class="tc-admin-sidebar-items">
+        <div class="tc-admin-nav-item active"><i class="fa fa-chart-line" style="width:18px"></i> Analytics</div>
+        <div class="tc-admin-nav-item"><i class="fa fa-users" style="width:18px"></i> Users</div>
+        <div class="tc-admin-nav-item"><i class="fa fa-shield-halved" style="width:18px"></i> Moderation</div>
+        <div class="tc-admin-nav-item">
+          <i class="fa fa-flag" style="width:18px"></i> Reports
+          <span style="margin-left:auto;background:var(--tc-error);color:#fff;font-size:10px;font-weight:700;
+            min-width:18px;height:18px;border-radius:99px;display:flex;align-items:center;
+            justify-content:center;padding:0 4px">7</span>
+        </div>
+        <div class="tc-admin-nav-item"><i class="fa fa-dollar-sign" style="width:18px"></i> Revenue</div>
+        <div class="tc-admin-nav-item">
+          <i class="fa fa-circle-check" style="width:18px"></i> Verification
+          <span style="margin-left:auto;background:var(--tc-purple);color:#fff;font-size:10px;font-weight:700;
+            min-width:18px;height:18px;border-radius:99px;display:flex;align-items:center;
+            justify-content:center;padding:0 4px">3</span>
+        </div>
+        <div class="tc-admin-nav-item"><i class="fa fa-rectangle-ad" style="width:18px"></i> Ads Manager</div>
+        <div class="tc-admin-nav-item"><i class="fa fa-crown" style="width:18px"></i> Premium</div>
+        <div class="tc-admin-nav-item"><i class="fa fa-palette" style="width:18px"></i> Themes</div>
+        <div class="tc-admin-nav-item"><i class="fa fa-puzzle-piece" style="width:18px"></i> Components</div>
+        <div class="tc-admin-nav-item"><i class="fa fa-gear" style="width:18px"></i> Settings</div>
+        <div style="margin-top:24px;padding:8px">
+          <button class="tc-btn tc-btn-ghost tc-btn-sm" style="width:100%">← Back to Site</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin content -->
+    <div style="padding:24px;background:var(--tc-bg)">
+      <h1 style="font-size:22px;font-weight:800;margin:0 0 20px">Analytics Dashboard</h1>
+
+      <!-- Stats grid -->
+      <div class="tc-stats-grid">
+        <div class="tc-stat-card">
+          <div class="tc-stat-icon purple"><i class="fa fa-users"></i></div>
+          <div><div class="tc-stat-num">24,891</div><div class="tc-stat-label">Total Users</div></div>
+        </div>
+        <div class="tc-stat-card">
+          <div class="tc-stat-icon green"><i class="fa fa-user-plus"></i></div>
+          <div><div class="tc-stat-num">+347</div><div class="tc-stat-label">New Today</div></div>
+        </div>
+        <div class="tc-stat-card">
+          <div class="tc-stat-icon gold"><i class="fa fa-dollar-sign"></i></div>
+          <div><div class="tc-stat-num">$18,240</div><div class="tc-stat-label">Revenue (MTD)</div></div>
+        </div>
+        <div class="tc-stat-card">
+          <div class="tc-stat-icon red"><i class="fa fa-flag"></i></div>
+          <div><div class="tc-stat-num">7</div><div class="tc-stat-label">Pending Reports</div></div>
+        </div>
+      </div>
+
+      <!-- User growth chart -->
+      <div class="tc-card" style="padding:20px;margin-bottom:20px">
+        <div style="font-weight:700;margin-bottom:16px">User Growth — Last 7 Days</div>
+        <div class="tc-chart">
+          <div class="tc-bar-wrap"><div class="tc-bar" style="height:55%"></div><div class="tc-bar-label">Mon</div></div>
+          <div class="tc-bar-wrap"><div class="tc-bar" style="height:70%"></div><div class="tc-bar-label">Tue</div></div>
+          <div class="tc-bar-wrap"><div class="tc-bar" style="height:45%"></div><div class="tc-bar-label">Wed</div></div>
+          <div class="tc-bar-wrap"><div class="tc-bar" style="height:85%"></div><div class="tc-bar-label">Thu</div></div>
+          <div class="tc-bar-wrap"><div class="tc-bar" style="height:60%"></div><div class="tc-bar-label">Fri</div></div>
+          <div class="tc-bar-wrap"><div class="tc-bar" style="height:90%;opacity:1"></div><div class="tc-bar-label">Sat</div></div>
+          <div class="tc-bar-wrap"><div class="tc-bar" style="height:75%"></div><div class="tc-bar-label">Sun</div></div>
+        </div>
+      </div>
+
+      <!-- Reports table -->
+      <div style="font-weight:700;margin-bottom:12px">Recent Reports</div>
+      <div class="tc-table-wrap">
+        <table class="tc-table">
+          <thead>
+            <tr>
+              <th>Reporter</th>
+              <th>Content Type</th>
+              <th>Reason</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>@sarah_c</td>
+              <td>Post</td>
+              <td>Spam</td>
+              <td>Apr 27, 2026</td>
+              <td><span class="tc-pill tc-pill-purple">Pending</span></td>
+              <td><button class="tc-btn tc-btn-primary tc-btn-sm">Review</button></td>
+            </tr>
+            <tr>
+              <td>@marcus_w</td>
+              <td>Comment</td>
+              <td>Harassment</td>
+              <td>Apr 26, 2026</td>
+              <td><span class="tc-pill tc-pill-purple">Pending</span></td>
+              <td><button class="tc-btn tc-btn-primary tc-btn-sm">Review</button></td>
+            </tr>
+            <tr>
+              <td>@priya_p</td>
+              <td>Profile</td>
+              <td>Misinformation</td>
+              <td>Apr 25, 2026</td>
+              <td><span class="tc-pill tc-pill-green">Resolved</span></td>
+              <td><button class="tc-btn tc-btn-ghost tc-btn-sm">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function showView(v) {
+  ['feed','profile','premium','admin'].forEach(id => {
+    const el = document.getElementById('view-' + id);
+    const btn = document.getElementById('vb-' + id);
+    if (el)  el.style.display  = (id === v) ? (id === 'feed' ? 'flex' : 'block') : 'none';
+    if (btn) btn.classList.toggle('active', id === v);
+  });
+}
+
+function toggleDark() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.querySelectorAll('.tc-theme-toggle i').forEach(i => {
+    i.className = isDark ? 'fa fa-moon' : 'fa fa-sun';
+  });
+}
+
+// Apply saved theme
+(function(){ var t=localStorage.getItem('tc-theme')||'light'; document.documentElement.setAttribute('data-theme',t); })();
+</script>
+</body>
+</html>

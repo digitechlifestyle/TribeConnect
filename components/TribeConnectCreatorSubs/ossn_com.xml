@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component xmlns="http://www.opensource-socialnetwork.org/component/v/2.0">
+    <name>TribeConnect Creator Subscriptions</name>
+    <id>TribeConnectCreatorSubs</id>
+    <author>TribeConnect Team</author>
+    <description>Lets creators define subscription tiers, manage subscribers, and post exclusive content. Affiliate product showcase included.</description>
+    <license>MIT</license>
+    <version>1.0.0</version>
+    <category>monetisation</category>
+    <requires>
+        <type>ossn_version</type>
+        <version>9.2</version>
+    </requires>
+</component>

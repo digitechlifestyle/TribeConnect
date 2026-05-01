@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component xmlns="http://www.opensource-socialnetwork.org/component/v/2.0">
+    <name>TribeConnect Verification</name>
+    <id>TribeConnectVerification</id>
+    <author>TribeConnect Team</author>
+    <description>Profile verification badge system — users apply, admins review and approve/deny verification requests.</description>
+    <license>MIT</license>
+    <version>1.0.0</version>
+    <category>profiles</category>
+</component>
